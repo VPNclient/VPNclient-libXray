@@ -34,11 +34,7 @@ jobs:
       run: |
         python3 build/main.py apple gomobile
 
-    - name: Archive build artifacts
-      uses: actions/upload-artifact@v3  # Используем актуальную версию upload-artifact
-      with:
-        name: build-artifacts
-        path: path/to/artifacts  # Укажите путь к артефактам сборки
+
 
     - name: Notify build status
       if: always()
