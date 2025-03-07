@@ -1,4 +1,4 @@
-name: Build libXray
+name: Build for Android and Apple
 
 on:
   push:
@@ -13,26 +13,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y cmake ninja-build clang lld
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'  # Укажите версию Python, которую вы используете
 
-      - name: Locate CMakeLists.txt
-        run: find . -name CMakeLists.txt
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Если у вас есть файл requirements.txt
 
-      - name: Configure and build
-        run: |
-          mkdir -p build
-          cd build
-          cmake ../path/to/source -G Ninja -DCMAKE_BUILD_TYPE=Release  # Укажи правильный путь
-          ninja
+    - name: Build for Android
+      run: |
+        python3 build/main.py android
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: libXray-build
-          path: build/*
+    - name: Build for Apple (gomobile)
+      run: |
+        python3 build/main.py apple gomobile
+
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: path/to/artifacts  # Укажите путь к артефактам сборки
+
+    - name: Notify build status
+      if: always()
+      run: |
+        echo "Build status: ${{ job.status }}"
