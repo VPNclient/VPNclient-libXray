@@ -14,10 +14,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3  # Используем актуальную версию checkout
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4  # Используем актуальную версию setup-python
       with:
         python-version: '3.8'  # Укажите версию Python, которую вы используете
 
@@ -35,7 +35,7 @@ jobs:
         python3 build/main.py apple gomobile
 
     - name: Archive build artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3  # Используем актуальную версию upload-artifact
       with:
         name: build-artifacts
         path: path/to/artifacts  # Укажите путь к артефактам сборки
