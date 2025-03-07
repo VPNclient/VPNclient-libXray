@@ -1,0 +1,35 @@
+name: Build libXray
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y cmake ninja-build clang lld
+
+      - name: Configure and build
+        run: |
+          mkdir -p build
+          cd build
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+          ninja
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: libXray-build
+          path: build/*
