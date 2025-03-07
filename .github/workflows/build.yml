@@ -21,11 +21,14 @@ jobs:
           sudo apt update
           sudo apt install -y cmake ninja-build clang lld
 
+      - name: Locate CMakeLists.txt
+        run: find . -name CMakeLists.txt
+
       - name: Configure and build
         run: |
           mkdir -p build
           cd build
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake ../path/to/source -G Ninja -DCMAKE_BUILD_TYPE=Release  # Укажи правильный путь
           ninja
 
       - name: Upload artifacts
